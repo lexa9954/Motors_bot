@@ -28,3 +28,6 @@ if __name__ == '__main__':
         executor.start_polling(dp, skip_updates=True)
     except Exception as e:
         logging.error(f"Ошибка при запуске бота: {e}")
+
+# Ожидание пользовательского ввода перед закрытием
+input("Нажмите Enter для выхода...")
