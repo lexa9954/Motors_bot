@@ -1,33 +1,27 @@
-import logging
-from aiogram import Bot, Dispatcher, types
-from aiogram.types import ParseMode
-from aiogram import executor
+
+from aiogram import Bot, Dispatcher, executor
 
 
 API_TOKEN = '6723244609:AAG3YVvZyOHlknyNQmFu31paW_MUr9nkSkA'
 
-logging.basicConfig(level=logging.INFO)
+# Создаем экземпляр бота
+bot = Bot(token=API_TOKEN)
 
-try:
-    bot = Bot(token=API_TOKEN)
-    dp = Dispatcher(bot)
-except Exception as e:
-    logging.error(f"Ошибка при создании объекта бота: {e}")
+# Создаем диспетчер для обработки обновлений
+dp = Dispatcher(bot)
 
-@dp.message_handler(commands=['start', 'help'])
-async def send_welcome(message: types.Message):
-    await message.reply("Привет!")
-    print("хуй")
+# Обработчик команды /start
+@dp.message_handler(commands=['start'])
+async def start(message):
+    await message.answer("Hello! I'm your bot.")
 
-@dp.message_handler(commands=['info'])
-async def send_info(message: types.Message):
-    await message.reply("Это простой телеграм-бот, созданный с использованием aiogram.")
-
+# Запуск бота
 if __name__ == '__main__':
     try:
-        executor.start_polling(dp, skip_updates=True)
+        print('Бот запущен')
+        executor.start_polling(dp, timeout=10)
     except Exception as e:
-        logging.error(f"Ошибка при запуске бота: {e}")
+        print("An error occurred while starting the bot: %s", e)
 
 # Ожидание пользовательского ввода перед закрытием
 input("Нажмите Enter для выхода...")
