@@ -1,27 +1,25 @@
+import asyncio
+import logging
+from aiogram import Bot, Dispatcher, types
+from aiogram.filters.command import Command
 
-from aiogram import Bot, Dispatcher, executor
+# Включаем логирование, чтобы не пропустить важные сообщения
+logging.basicConfig(level=logging.INFO)
 
-
-API_TOKEN = '6723244609:AAG3YVvZyOHlknyNQmFu31paW_MUr9nkSkA'
-
-# Создаем экземпляр бота
+API_TOKEN = "6723244609:AAG3YVvZyOHlknyNQmFu31paW_MUr9nkSkA"
+# Объект бота
 bot = Bot(token=API_TOKEN)
+# Диспетчер
+dp = Dispatcher()
 
-# Создаем диспетчер для обработки обновлений
-dp = Dispatcher(bot)
+# Хэндлер на команду /start
+@dp.message(Command("start"))
+async def cmd_start(message: types.Message):
+    await message.answer("Hello!")
 
-# Обработчик команды /start
-@dp.message_handler(commands=['start'])
-async def start(message):
-    await message.answer("Hello! I'm your bot.")
+# Запуск процесса поллинга новых апдейтов
+async def main():
+    await dp.start_polling(bot)
 
-# Запуск бота
-if __name__ == '__main__':
-    try:
-        print('Бот запущен')
-        executor.start_polling(dp, timeout=10)
-    except Exception as e:
-        print("An error occurred while starting the bot: %s", e)
-
-# Ожидание пользовательского ввода перед закрытием
-input("Нажмите Enter для выхода...")
+if __name__ == "__main__":
+    asyncio.run(main())
